@@ -63,7 +63,6 @@ exports.signInExistingUser = async (req, res) => {
             status: 1,
             message: "Successfully logged in",
             token,
-            data: user,
         });
     } catch (error) {
         res.status(400).json({
