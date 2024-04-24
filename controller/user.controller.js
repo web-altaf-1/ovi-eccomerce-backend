@@ -42,26 +42,26 @@ exports.signInExistingUser = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 status: 0,
-                error: "No account found with this email",
+                error: "দুঃখিত স্যার! এই ইমেইলে কোনো একাউন্ট খুজে পাওয়া যায় নি, সঠিক ইমেইল দিয়ে পুনরায় লগিন করুন !",
             });
         }
         if (user?.providerId === "firebase") {
             return res.status(401).json({
                 status: 0,
-                error: "This email is registered by google",
+                error: "এই ইমেইলটি গুগুল দিয়ে রেজিস্টার করা !", 
             });
         }
         const isValidPassword = user.comparePassword(password, user?.password);
         if (!isValidPassword) {
             return res.status(401).json({
                 status: 0,
-                error: "Password not matched perfectly",
+                error: "আপনার দেওয়া পাসওয়ার্ডটি সঠিক নয়, মনে করে পুনরায় চেষ্টা করুন !!",
             });
         }
         const token = generateToken(user);
         return res.status(200).json({
             status: 1,
-            message: "Successfully logged in",
+            message: "অভিনন্দন ! সফলভাবে লগিন সম্পন্ন হয়েছে...!!",
             token,
         });
     } catch (error) {
