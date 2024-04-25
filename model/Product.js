@@ -8,7 +8,8 @@ const productSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
-    unique: true
+    unique: true,
+    require: true
   },
   description: {
     type: String,
@@ -22,12 +23,13 @@ const productSchema = new mongoose.Schema({
       image: String,
       hasColor: {
         type: Boolean,
-        default: true,
+      },
+      weight: {
+        type: Number
       },
       color: Object,
       size: {
         type: String,
-        lowercase: true,
       },
 
       price: {
