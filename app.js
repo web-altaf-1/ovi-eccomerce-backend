@@ -21,12 +21,14 @@ app.use(cookieParser());
 // import routes
 const userRoute = require('./routes/user.route');
 const productRoute = require('./routes/product.route');
+const orderRoute = require('./routes/order.route');
 app.get('/', (req, res) => {
     res.send('Hurrey Server is working! YaY!');
 });
 
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/product', productRoute);
+app.use('/api/v1/order', orderRoute);
 
 
 app.use((err, req, res, next) => {
