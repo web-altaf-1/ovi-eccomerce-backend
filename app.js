@@ -12,6 +12,7 @@ app.use(
             'http://localhost:8080',
             'http://localhost:5173',
             'https://www.ovisshop.com',
+            'https://admin.ovisshop.com',
         ],
     })
 );
