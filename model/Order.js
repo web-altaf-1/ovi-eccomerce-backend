@@ -50,6 +50,11 @@ const cartItemSchema = new Schema({
     quantity: { type: Number, required: true },
 });
 
+const statusSchema = new Schema({
+    value: { type: Boolean },
+    time: { type: Date, default: Date.now },
+});
+
 // Define the schema for the order
 const orderSchema = new Schema({
     name: {
@@ -68,9 +73,30 @@ const orderSchema = new Schema({
         enum: ['cash', 'card', 'online'],
         required: true,
     },
+    trackingSteps: {
+        type: String,
+        enum: ['Received', 'Processing', 'Shipped', 'Delivered'],
+        default: 'Received'
+    },
+
+    currentStep: {
+        type: Number,
+        default: 1
+    },
+    statusHistory: {
+        isReceived: statusSchema,
+        isProcessing: statusSchema,
+        isShipped: statusSchema,
+        isDelivered: statusSchema,
+        isCancel: statusSchema,
+    },
+    isCancel: {
+        type: Boolean,
+        default: false
+    },
+
     cartItems: [cartItemSchema], // Array of cart items
-    createdAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 // Compile the model from the schema
 const Order = mongoose.model('Order', orderSchema);

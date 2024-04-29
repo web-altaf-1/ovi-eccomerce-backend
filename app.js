@@ -22,11 +22,13 @@ app.use(cookieParser());
 const userRoute = require('./routes/user.route');
 const productRoute = require('./routes/product.route');
 const orderRoute = require('./routes/order.route');
+const adminRoute = require('./routes/admin.route');
 app.get('/', (req, res) => {
     res.send('Hurrey Server is working! YaY!');
 });
 
 app.use('/api/v1/user', userRoute);
+app.use('/api/v1/admin', adminRoute);
 app.use('/api/v1/product', productRoute);
 app.use('/api/v1/order', orderRoute);
 
