@@ -16,15 +16,39 @@ exports.createNewOrder = async (req, res) => {
     try {
         const orderId = await generateInvoiceId()
         const orderData = { ...req.body, orderId };
-        const cartItem = orderData?.cartItems;
-
-
         const order = await Order.create(orderData);
-
         return res.status(200).json({
             status: 1,
             message: "অভিনন্দন ! আপনার অর্ডারটি সফলভাবে গ্রহন করা হয়েছে !!",
             orderId: order?.orderId
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 0,
+            error: "দুঃখিত ! কোনো একটি সমস্যার কারনে অর্ডারটি নেওয়া যায়নি, কিছুক্ষন পর আবার চেষ্টা করুন ! ধন্যবাদ" // Generic error message
+        });
+    }
+}
+exports.updateOrderDownloadStatus = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+
+        const updatedOrder = await Order.findOneAndUpdate(
+            { orderId },
+            { $set: { invoiceDownloaded: true } },
+            { new: true }
+        );
+        if (!updatedOrder) {
+            res.status(500).json({
+                status: 0,
+                error: "Could not found any order with this orderId"
+            });
+        }
+
+        return res.status(200).json({
+            status: 1,
+            message: "অভিনন্দন ! আপনার অর্ডারটি সফলভাবে গ্রহন করা হয়েছে !!",
+            data: updatedOrder
         });
     } catch (error) {
         res.status(500).json({

@@ -14,7 +14,6 @@ const variantSchema = new Schema({
     price: { type: Number, required: true },
     oldPrice: { type: Number, default: null },
     stock: { type: Number, required: true },
-    weight: { type: Number, default: 0 },
     status: { type: String, default: 'selling' },
 });
 
@@ -48,6 +47,7 @@ const cartItemSchema = new Schema({
     status: { type: String, default: 'selling' },
     product: productSchema, // Nested schema for product details
     quantity: { type: Number, required: true },
+    weight: { type: Number }
 });
 
 const statusSchema = new Schema({
@@ -94,7 +94,10 @@ const orderSchema = new Schema({
         type: Boolean,
         default: false
     },
-
+    invoiceDownloaded: {
+        type: Boolean,
+        default: false
+    },
     cartItems: [cartItemSchema], // Array of cart items
 }, { timestamps: true });
 
