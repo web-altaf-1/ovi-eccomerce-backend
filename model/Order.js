@@ -73,10 +73,11 @@ const orderSchema = new Schema({
         enum: ['cash', 'card', 'online'],
         required: true,
     },
-    trackingSteps: {
+    
+    status: {
         type: String,
-        enum: ['Received', 'Processing', 'Shipped', 'Delivered'],
-        default: 'Received'
+        enum: ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Successful', 'Cancelled', 'Refunded', 'Returned', 'Failed'],
+        default: 'Pending'
     },
 
     currentStep: {
@@ -84,11 +85,15 @@ const orderSchema = new Schema({
         default: 1
     },
     statusHistory: {
-        isReceived: statusSchema,
-        isProcessing: statusSchema,
-        isShipped: statusSchema,
-        isDelivered: statusSchema,
-        isCancel: statusSchema,
+        Pending: statusSchema,
+        Processing: statusSchema,
+        Confirmed: statusSchema,
+        Shipped: statusSchema,
+        Successful: statusSchema,
+        Cancelled: statusSchema,
+        Refunded: statusSchema,
+        Returned: statusSchema,
+        Failed: statusSchema,
     },
     isCancel: {
         type: Boolean,

@@ -1,5 +1,6 @@
 const Product = require("../model/Product");
 const User = require("../model/User");
+const { getAdminAllOrdersServices } = require("../services/order.service");
 const { getAllProductsService } = require("../services/product.service");
 const { generateToken } = require("../utils/generateToken");
 
@@ -96,6 +97,23 @@ exports.getAdminProductDetails = async (req, res) => {
             status: 1,
             message: "Successfully get product details",
             data: details,
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 0,
+            error: error.message,
+        });
+    }
+};
+exports.getAdminAllOrders = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const perPage = parseInt(req.query.perPage) || 10;
+        const orders = await getAdminAllOrdersServices(page, perPage);
+        return res.status(200).json({
+            status: 1,
+            message: "Successfully get product details",
+            orders
         });
     } catch (error) {
         res.status(400).json({

@@ -8,4 +8,6 @@ router.post('/login', adminController.makeLoginAdmin);
 router.get('/me', verifyToken, adminController.getMe);
 router.get('/products/bulk', adminController.getAllProductsForAdmin);
 router.get('/product/:slug', adminController.getAdminProductDetails);
+
+router.get('/get-all-orders', adminController.getAdminAllOrders);
 module.exports = router;

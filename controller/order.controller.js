@@ -109,11 +109,15 @@ exports.updateOrderStatus = async (req, res) => {
 
         // Map step numbers to their corresponding status keys
         const stepMapping = {
-            1: 'isReceived',
-            2: 'isProcessing',
-            3: 'isShipped',
-            4: 'isDelivered',
-            5: 'isCancel',
+            1: 'Pending',
+            2: 'Confirmed',
+            3: 'Processing',
+            4: 'Shipped',
+            5: 'Successful',
+            6: 'Cancelled',
+            7: 'Refunded',
+            8: 'Returned',
+            9: 'Failed',
         };
 
         if (!stepMapping[nextStep]) {
@@ -125,10 +129,10 @@ exports.updateOrderStatus = async (req, res) => {
 
         // Find the order and update the current step and status history
         const updatedOrder = await Order.findOneAndUpdate(
-            { orderId: orderId, currentStep: currentStep }, // Find the order
+            { orderId: orderId, currentStep: currentStep }, 
             {
-                currentStep: nextStep, // Update to next step
-                trackingSteps: stepMapping[nextStep], // Corresponding tracking step
+                status: stepMapping[nextStep],
+                currentStep: nextStep,
                 [`statusHistory.${stepMapping[nextStep]}`]: { value: true, time: new Date() }, // Update status history
             },
             { new: true } // Return the updated document
