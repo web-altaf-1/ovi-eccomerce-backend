@@ -1,3 +1,4 @@
+const Order = require("../model/Order");
 const Product = require("../model/Product");
 const User = require("../model/User");
 const { getAdminAllOrdersServices } = require("../services/order.service");
@@ -109,11 +110,14 @@ exports.getAdminAllOrders = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const perPage = parseInt(req.query.perPage) || 10;
-        const orders = await getAdminAllOrdersServices(page, perPage);
+        const orderId = req.query.orderId;
+        const contact = req.query.contact;
+
+        const orders = await getAdminAllOrdersServices(page, perPage, orderId,contact);
         return res.status(200).json({
             status: 1,
             message: "Successfully get product details",
-            orders
+            orders,
         });
     } catch (error) {
         res.status(400).json({
@@ -122,3 +126,52 @@ exports.getAdminAllOrders = async (req, res) => {
         });
     }
 };
+
+
+
+exports.deleteOrderByOrderId = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const order = await Order.findOneAndDelete({ orderId: id });
+        if (!order) {
+            return res.status(404).json({
+                status: 0,
+                message: "এই আইডি দিয়ে কোনো অর্ডার খুজে পাওয়া যায়নি",
+            });
+        }
+
+
+        return res.status(200).json({
+            status: 1,
+            message: "successfully deleted order",
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 0,
+            error: "দুঃখিত ! কোনো একটি সমস্যার কারনে অর্ডারটি নেওয়া যায়নি, কিছুক্ষন পর আবার চেষ্টা করুন ! ধন্যবাদ"
+        });
+    }
+}
+exports.getAdminOrderDetailsByOrderId = async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const order = await Order.findOne({ orderId: id });
+        if (!order) {
+            return res.status(404).json({
+                status: 0,
+                message: "এই আইডি দিয়ে কোনো অর্ডার খুজে পাওয়া যায়নি",
+            });
+        }
+        return res.status(200).json({
+            status: 1,
+            message: "successfully get order details",
+            order
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 0,
+            error: "দুঃখিত ! কোনো একটি সমস্যার কারনে অর্ডারটি নেওয়া যায়নি, কিছুক্ষন পর আবার চেষ্টা করুন ! ধন্যবাদ"
+        });
+    }
+}

@@ -129,7 +129,7 @@ exports.updateOrderStatus = async (req, res) => {
 
         // Find the order and update the current step and status history
         const updatedOrder = await Order.findOneAndUpdate(
-            { orderId: orderId, currentStep: currentStep }, 
+            { orderId: orderId, currentStep: currentStep },
             {
                 status: stepMapping[nextStep],
                 currentStep: nextStep,
@@ -157,3 +157,4 @@ exports.updateOrderStatus = async (req, res) => {
         });
     }
 }
+

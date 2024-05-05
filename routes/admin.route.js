@@ -10,4 +10,6 @@ router.get('/products/bulk', adminController.getAllProductsForAdmin);
 router.get('/product/:slug', adminController.getAdminProductDetails);
 
 router.get('/get-all-orders', adminController.getAdminAllOrders);
+router.delete('/delete-order/:id', adminController.deleteOrderByOrderId);
+router.get('/get-order-details/:id', adminController.getAdminOrderDetailsByOrderId);
 module.exports = router;
