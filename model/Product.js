@@ -18,6 +18,31 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String
   },
+
+  barCode: {
+    type: String,
+    // required: true,
+  },
+  averageRating: {
+    type: Number,
+    default: 0,
+  },
+  sku: {
+    type: String,
+    // require: true,
+  },
+  brand: {
+    type: String,
+    // required: true,
+  },
+  category: {
+    type: String,
+  },
+
+  tags: {
+    type: [String],
+    default: [],
+  },
   variants: [
     {
       image: String,
@@ -51,31 +76,6 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  barCode: {
-    type: String,
-    // required: true,
-  },
-  averageRating: {
-    type: Number,
-    default: 0,
-  },
-  sku: {
-    type: String,
-    // require: true,
-  },
-  brand: {
-    type: String,
-    // required: true,
-  },
-  category: {
-    type: String,
-    required: true,
-  },
-
-  tags: {
-    type: [String],
-    default: [],
-  },
   createdAt: {
     type: Date,
     default: Date.now,

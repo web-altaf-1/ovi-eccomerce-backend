@@ -106,8 +106,6 @@ exports.updateOrderStatus = async (req, res) => {
                 error: 'Invalid input data. Ensure all required fields are provided and of correct type.',
             });
         }
-
-        // Map step numbers to their corresponding status keys
         const stepMapping = {
             1: 'Pending',
             2: 'Confirmed',
@@ -119,32 +117,27 @@ exports.updateOrderStatus = async (req, res) => {
             8: 'Returned',
             9: 'Failed',
         };
-
         if (!stepMapping[nextStep]) {
             return res.status(400).json({
                 status: 0,
                 error: 'Invalid next step value.',
             });
         }
-
-        // Find the order and update the current step and status history
         const updatedOrder = await Order.findOneAndUpdate(
             { orderId: orderId, currentStep: currentStep },
             {
                 status: stepMapping[nextStep],
                 currentStep: nextStep,
-                [`statusHistory.${stepMapping[nextStep]}`]: { value: true, time: new Date() }, // Update status history
+                [`statusHistory.${stepMapping[nextStep]}`]: { value: true, time: new Date() },
             },
-            { new: true } // Return the updated document
+            { new: true }
         );
-
         if (!updatedOrder) {
             return res.status(404).json({
                 status: 0,
                 error: 'Order not found or the current step does not match.',
             });
         }
-
         res.status(200).json({
             status: 1,
             message: 'Order status updated successfully.',

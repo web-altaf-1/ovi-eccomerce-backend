@@ -113,7 +113,7 @@ exports.getAdminAllOrders = async (req, res) => {
         const orderId = req.query.orderId;
         const contact = req.query.contact;
 
-        const orders = await getAdminAllOrdersServices(page, perPage, orderId,contact);
+        const orders = await getAdminAllOrdersServices(page, perPage, orderId, contact);
         return res.status(200).json({
             status: 1,
             message: "Successfully get product details",
@@ -175,3 +175,42 @@ exports.getAdminOrderDetailsByOrderId = async (req, res) => {
         });
     }
 }
+
+
+exports.createNewProductFromAdmin = async (req, res) => {
+    try {
+        const data = req.body;
+        const { title, description, image, brand, sku, barCode, tags, variants, slug } = data;
+        const productData = {
+            name: title,
+            slug,
+            description,
+            image,
+            barCode,
+            sku,
+            brand,
+            tags,
+            variants
+        }
+
+        const isAlreadyAvaible = await Product.findOne({ slug })
+        if (isAlreadyAvaible) {
+            return res.status(404).json({
+                status: 0,
+                message: "Product already exists with this slug",
+            });
+        }
+        const newProduct = await Product.create(productData)
+
+        return res.status(200).json({
+            status: 1,
+            message: "Successfully created new products",
+            newProduct
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 0,
+            error: error.message,
+        });
+    }
+};
